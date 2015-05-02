@@ -2,9 +2,9 @@
 Cache_PreviewID = Cache_PreviewID or {}
 Cache_PreviewImage = Cache_PreviewImage or {}
 
-local col_default = Color(200, 200, 200)
-local col_inactive = Color(240, 240, 240)
-local col_disabled = Color(225, 225, 225)
+local col_default = Color(210, 210, 210)
+local col_inactive = Color(245, 245, 245)
+local col_disabled = Color(160, 160, 160)
 
 local PANEL = {}
 
@@ -75,6 +75,10 @@ function PANEL:SetInfo(info)
 	]]
 	
 	self.addon_info = info
+	
+	if not info.mounted then
+		self.Thumbnail:SetImageColor(Color(255, 255, 255, 200))
+	end
 	
 	self.Title:SetText(info.title)
 	self.Title:SizeToContents()
