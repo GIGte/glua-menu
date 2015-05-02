@@ -59,7 +59,7 @@ function PANEL:InitEx()
 	
 	self.AddonList = addonlist_spanel:Add("AddonList")
 	
-	self.AddonList:Dock(FILL)
+	self.AddonList:Dock(TOP)
 	
 	toolpanel:Dock(TOP)
 	
