@@ -1,0 +1,7 @@
+
+# Default menu files
+/*.lua
+/mount
+
+# Widgets
+/remake/widgets/*.lua
