@@ -152,7 +152,7 @@ function PANEL:PrepareSettings()
 	
 	local settings = self.GameSettings
 	
-	settings = { -- clear settings from old options
+	self.GameSettings = { -- clear settings from old options
 		["map"] = settings["map"],
 		["maxplayers"] = settings["maxplayers"],
 		["hostname"] = settings["hostname"],
@@ -160,7 +160,7 @@ function PANEL:PrepareSettings()
 	}
 	
 	if self.Options then
-		self.Options:UpdateOptions(gm_settings)
+		self.Options:UpdateOptions(gm_settings, settings)
 	end
 end
 

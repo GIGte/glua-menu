@@ -97,13 +97,13 @@ function PANEL:AddOptions(options, typename, func) -- internal
 	end
 end
 
-function PANEL:UpdateOptions(options)
+function PANEL:UpdateOptions(options, settings)
 	self:Clear()
 	
 	self:AddTextBox("#server_name", nil, "hostname",
-		options["hostname"] or "Garry's Mod")
+		settings["hostname"] or "Garry's Mod")
 	self:AddCheckBox("#lan_server", nil, "sv_lan",
-		options["sv_lan"] or 0)
+		settings["sv_lan"] or 0)
 	
 	self:AddOptions(options, "Text", self.AddTextBox)
 	self:AddOptions(options, "Numeric", self.AddNumEntry)
