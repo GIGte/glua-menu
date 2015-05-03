@@ -19,14 +19,14 @@ function PANEL:LayoutIcons_TOP() -- added centering
 	local ch_w = children[1]:GetWide() + self.m_iSpaceX
 	local column_n = math.floor((MaxWidth + self.m_iSpaceX) / ch_w)
 	
-	local left_padding
+	local left_padding = 0
 	
-	if #children > column_n then
+	--if #children > column_n then
 		left_padding = math.floor((MaxWidth - ch_w * column_n) / 2)
 		MaxWidth = MaxWidth - x * 2 + 1
 		
 		x = left_padding
-	end
+	--end
 	
 	for k, v in pairs(children) do
 		local w, h = v:GetSize()
