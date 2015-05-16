@@ -16,8 +16,9 @@ function MainMenu.InitializeView()
 	MainMenu.PageDefault = InitPage("Default")
 	MainMenu.PageDefault:SetInGame(IsInGame())
 	
-	InitPage("NewGame")
 	InitPage("Addons")
+	InitPage("NewGame")
+	InitPage("Servers")
 	
 	MainMenu.NavigateTo("Default")
 	
