@@ -88,21 +88,56 @@ end
 function PANEL:SetGamemodeData(gm_data)
 	self.data = gm_data
 	
+	self.ServerList.VBar:SetScroll(0)
+	self.ServerInfo:SetContentsVisible(false)
+	
+	self:UpdateGamemodeData(gm_data)
+end
+
+function PANEL:UpdateGamemodeData(gm_data)
 	self.Title:SetText(gm_data.Title)
 	self.Title:SizeToContents()
+end
+
+local function determineRanking(data)
+	local val = data.ping
 	
-	self.ServerInfo:SetContentsVisible(false)
+	if not data.hasmap then
+		val = val + 20
+	end
+	
+	if data.players == 0 then
+		val = val + 100
+	end
+	
+	if data.players == data.maxplayers then
+		val = val + 75
+	end
+	
+	if data.pass then
+		val = val + 300
+	end
+	
+	return val
+end
+
+local function getRank(value)
+	value = math.floor(value / 100)
+	return value > 5 and 5 or value
 end
 
 function PANEL:AddServer(data)
 	local pl_count = string.format("%d / %d", data.players, data.maxplayers)
+	local rank = determineRanking(data)
+	rank = getRank(rank)
+	rank = string.rep("* "--[[☆]], rank)--string.format("%d / 5", rank)
 	
 	local line = self.ServerList:AddLine(
 		data.name,
 		data.map,
 		pl_count,
 		tostring(data.ping),
-		"N/A"
+		rank
 	)
 	
 	line.data = data
