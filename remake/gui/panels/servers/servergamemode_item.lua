@@ -47,6 +47,10 @@ function PANEL:SetGamemodeData(gm_data)
 		self.Icon:FixVertexLitMaterial()
 	end
 	
+	self:UpdateGamemodeData(gm_data)
+end
+
+function PANEL:UpdateGamemodeData(gm_data)
 	self.Title:SetText(gm_data.Title)
 end
 

@@ -2,6 +2,9 @@
 local PANEL = {}
 
 function PANEL:Init()
+	self.items = {}
+	self.items_last_y = 5
+	
 	self.Header = self:Add("DSizeToContents")
 	
 	do
@@ -36,28 +39,101 @@ function PANEL:Init()
 	self.ScrollPanel:Dock(FILL)
 end
 
+function PANEL:PerformLayout(w, h)
+	local canvas = self.ScrollPanel:GetCanvas()
+	local cw, ch = canvas:GetSize()
+	
+	w = cw - (ch + 10 > h and 15 or 10)
+	
+	local items = self.items
+	
+	for i = 1, #items do
+		local item = items[i]
+		
+		item:SetWide(w)
+	end
+end
+
+function PANEL:SortChildren() -- internal
+	local items = self.items
+	
+	table.sort(items, function(a, b)
+			a, b = a:GetGamemodeData(), b:GetGamemodeData()
+			return a.PlayerCount > b.PlayerCount
+		end)
+	
+	local y = 5
+	
+	for i = 1, #items do
+		local item = items[i]
+		
+		item:SetPos(5, y)--item:Dock(TOP)
+		y = y + item:GetTall() + 5
+	end
+end
+
 function PANEL:AddElement(gm_data)
-	local row = self.ScrollPanel:Add("ServerGamemodeItem")
-	row:SetGamemodeData(gm_data)
+	local panel = self.ScrollPanel:Add("ServerGamemodeItem")
+	panel:SetGamemodeData(gm_data)
 	
-	row:DockMargin(0, 5, 0, 0)
-	row:Dock(TOP)
+	--panel:DockMargin(0, 5, 0, 0)
+	--panel:Dock(TOP)
 	
-	row.DoClick = function(pnl)
+	local y = self.items_last_y
+	
+	panel:SetPos(5, y)
+	
+	self.items_last_y = y + panel:GetTall() + 5
+	
+	panel.DoClick = function(pnl)
 		self:OnChoose(pnl:GetGamemodeData())
 	end
+	
+	table.insert(self.items, panel)
+	
+	gm_data.Panel = panel
 	
 	gm_data.ServerCount = 0
 	gm_data.PlayerCount = 0
 end
 
 function PANEL:UpdateInfo(gm_data, server_data)
+	local panel = gm_data.Panel
+	
 	gm_data.ServerCount = gm_data.ServerCount + 1
 	gm_data.PlayerCount = gm_data.PlayerCount + server_data.players
+	
+	panel:UpdateGamemodeData(gm_data)
+	
+	if self.is_sort_pending then return end
+	
+	local items = self.items
+	
+	for i = 1, #items do
+		local item = items[i]
+		
+		local item_data = item:GetGamemodeData()
+		
+		if gm_data.PlayerCount > item_data.PlayerCount and panel ~= item then
+			self.is_sort_pending = true
+			
+			timer.Simple(1.5, function()
+				if self:IsValid() then
+					self.is_sort_pending = nil
+					self:SortChildren()
+				end
+			end)
+			
+			break
+		end
+	end
 end
 
 function PANEL:ClearData()
 	self.ScrollPanel:Clear()
+	
+	self.items = {}
+	self.items_last_y = 5
 end
 
 --[[function PANEL:OnGamemodeChosen(element)

@@ -101,12 +101,26 @@ function PANEL:OnServerFound(query_id, data)
 		gm_data = {
 			Name = data.gamemode,
 			Title = data.desc,
-			WorkshopID = data.wsid
+			TitleVariatons = {},
+			WorkshopID = data.wsid,
+			WorkshopIDVariatons = {},
 		}
 		
 		self.ServersTable[data.gamemode] = gm_data
 		
 		self.ServerGamemodesList:AddElement(gm_data)
+	else
+		-- weird
+		
+		local vars = gm_data.TitleVariatons
+		vars[data.desc] = (vars[data.desc] or 0) + 1
+		
+		gm_data.Title = table.GetWinningKey(vars)
+		
+		local vars = gm_data.WorkshopIDVariatons
+		vars[data.desc] = (vars[data.wsid] or 0) + 1
+		
+		gm_data.WorkshopID = table.GetWinningKey(vars)
 	end
 	
 	self.ServerGamemodesList:UpdateInfo(gm_data, data)
@@ -117,6 +131,8 @@ function PANEL:OnServerFound(query_id, data)
 		if gm_data.Name == data.gamemode then
 			self.ServerList:AddServer(data)
 		end
+		
+		self.ServerList:UpdateGamemodeData(gm_data)
 	end
 	
 	-- remove useless fields
