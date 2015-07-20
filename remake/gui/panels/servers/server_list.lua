@@ -141,6 +141,9 @@ function PANEL:AddServer(data)
 	)
 	
 	line.data = data
+	
+	line:SetSortValue(3, data.players)
+	line:SetSortValue(4, data.ping)
 end
 
 function PANEL:ClearServers()
