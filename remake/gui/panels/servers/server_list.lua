@@ -33,6 +33,20 @@ function PANEL:Init()
 			but_back.DoClick = function()
 				return self:GetParent():OnReturnToGamemodesRequested()
 			end
+			
+			self.SearchBox = self.ControlBar:Add("DTextEntryWHint")
+			self.SearchBox:SetWide(180)
+			self.SearchBox:SetPlaceholder("#searchbar_placeholer") -- typo :\
+			
+			self.SearchBox.OnChange = function(pnl)
+				self.search_filter = pnl:GetText()
+				
+				self:FilterList()
+				self.ServerList:DataLayout(true)
+			end
+			
+			self.SearchBox:DockMargin(0, 2, 0, 2)--0, 5, 0, 5)
+			self.SearchBox:Dock(RIGHT)
 		end
 		
 		self.Header:DockMargin(0, 0, 0, 10)
@@ -68,6 +82,29 @@ function PANEL:Init()
 		self.ServerList:Dock(FILL)
 	end
 	
+	self.ServerList.DataLayout = function(self)
+		local y = 0
+		local h = self.m_iDataHeight
+		
+		local b = true
+		
+		for k, v in ipairs( self.Sorted ) do
+			if v:IsVisible() then
+				v:SetPos( 1, y )
+				v:SetSize( self:GetWide()-2, h )
+				v:DataLayout( self ) 
+				
+				v:SetAltLine( b )
+				
+				b = not b
+				
+				y = y + v:GetTall()
+			end
+		end
+		
+		return y
+	end
+	
 	self.ServerInfo = self:Add("ServerInfo")
 	self.ServerInfo:SetWide(310)
 	
@@ -97,6 +134,36 @@ end
 function PANEL:UpdateGamemodeData(gm_data)
 	self.Title:SetText(gm_data.Title)
 	self.Title:SizeToContents()
+end
+
+function PANEL:SearchTest(str)
+	if self.search_filter == "" or not self.search_filter then
+		return true
+	end
+	
+	local s, e = string.find(str, self.search_filter, 1, true)
+	
+	return s ~= nil
+end
+
+function PANEL:FilterList()
+	local lines = self.ServerList:GetLines()
+	
+	if self.search_filter == "" then
+		for i = 1, #lines do
+			local line = lines[i]
+			
+			line:Show()
+		end
+		
+		return
+	end
+	
+	for i = 1, #lines do
+		local line = lines[i]
+		
+		line:SetVisible(self:SearchTest(line.data.name))
+	end
 end
 
 local function determineRanking(data)
@@ -144,6 +211,10 @@ function PANEL:AddServer(data)
 	
 	line:SetSortValue(3, data.players)
 	line:SetSortValue(4, data.ping)
+	
+	if not self:SearchTest(data.name) then
+		line:Hide()
+	end
 end
 
 function PANEL:ClearServers()

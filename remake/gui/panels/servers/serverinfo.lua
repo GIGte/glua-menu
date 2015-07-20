@@ -12,9 +12,9 @@ function PANEL:InitEx()
 	self.Title:SetFont("DermaDefaultBold")
 	self.Title:SetDark(true)
 	
+	self.ServerInfoRow = self.Container:Add("Panel")
+	
 	do
-		self.ServerInfoRow = self.Container:Add("Panel")
-		
 		self.IPLabel = self.ServerInfoRow:Add("DLabel")
 		self.IPLabel:SetDark(true)
 		
@@ -31,7 +31,7 @@ function PANEL:InitEx()
 		but_refresh:SetImage("icon16/arrow_refresh.png")
 		
 		but_refresh.DoClick = function()
-			self:SetServerData(self.data) -- TODO: update title
+			self:QueryPlayerList() -- TODO: update title
 		end
 		
 		self.IPLabel:Dock(LEFT)
@@ -65,19 +65,8 @@ function PANEL:InitEx()
 		JoinServer(self.data.address)
 	end
 	
-	self.PasswordBox = self.Container:Add("DTextEntry")
-	
-	self.PasswordBox.Paint = function(pnl, w, h)
-		derma.SkinHook("Paint", "TextEntry", pnl, w, h)
-		
-		if pnl:GetText() == "" then
-			surface.SetTextColor(150, 150, 150)
-			surface.SetTextPos(6, 3)
-			surface.DrawText("Password")
-		end
-		
-		return false
-	end
+	self.PasswordBox = self.Container:Add("DTextEntryWHint")
+	self.PasswordBox:SetPlaceholder("Password")
 	
 	self.Title:Dock(TOP)
 	
@@ -123,7 +112,11 @@ function PANEL:SetServerData(data)
 	
 	self.PasswordBox:SetVisible(data.pass)
 	
-	local ipaddr = data.address
+	self:QueryPlayerList()
+end
+
+function PANEL:QueryPlayerList()
+	local ipaddr = self.data.address
 	
 	serverlist.PlayerList(ipaddr, function(players)
 		if ipaddr == self.data.address then

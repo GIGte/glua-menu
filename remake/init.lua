@@ -52,6 +52,7 @@ include("gui/pages/default.lua")
 include("gui/pages/newgame.lua")
 include("gui/pages/servers.lua")
 
+include("gui/panels/dtextentry_whint.lua")
 include("gui/panels/help_button.lua")
 include("gui/panels/logo.lua")
 include("gui/panels/mainpanel.lua")

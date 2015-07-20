@@ -51,6 +51,8 @@ function PANEL:SetGamemodeData(gm_data)
 end
 
 function PANEL:UpdateGamemodeData(gm_data)
+	self:SetAlpha(gm_data.PlayerCount == 0 and 150 or 255)
+	
 	self.Title:SetText(gm_data.Title)
 end
 
