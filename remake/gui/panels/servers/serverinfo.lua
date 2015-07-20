@@ -12,16 +12,45 @@ function PANEL:InitEx()
 	self.Title:SetFont("DermaDefaultBold")
 	self.Title:SetDark(true)
 	
-	self.IPLabel = self.Container:Add("DLabel")
-	self.IPLabel:SetDark(true)
+	do
+		self.ServerInfoRow = self.Container:Add("Panel")
+		
+		self.IPLabel = self.ServerInfoRow:Add("DLabel")
+		self.IPLabel:SetDark(true)
+		
+		local but_copy = self.ServerInfoRow:Add("DImageButton")
+		but_copy:SetSize(16, 16)
+		but_copy:SetImage("icon16/page_copy.png")
+		
+		but_copy.DoClick = function()
+			SetClipboardText(self.IPLabel:GetText())
+		end
+		
+		local but_refresh = self.ServerInfoRow:Add("DImageButton")
+		but_refresh:SetSize(16, 16)
+		but_refresh:SetImage("icon16/arrow_refresh.png")
+		
+		but_refresh.DoClick = function()
+			self:SetServerData(self.data) -- TODO: update title
+		end
+		
+		self.IPLabel:Dock(LEFT)
+		
+		but_copy:DockMargin(10, 4, 0, 4)
+		but_copy:Dock(LEFT)
+		
+		but_refresh:DockMargin(7, 4, 0, 4)
+		but_refresh:Dock(LEFT)
+	end
 	
 	self.PlayerList = self.Container:Add("DListView")
 	--self.PlayerList:SetSortable(false)
+	self.PlayerList.SortByColumn = function() end
 	self.PlayerList:SetMultiSelect(false)
 	
 	self.PlayerList:AddColumn("#playerlist_name")
 	self.PlayerList:AddColumn("#playerlist_score"):SetFixedWidth(60)
-	self.PlayerList:AddColumn("#playerlist_time"):SetFixedWidth(70)
+	self.PlayerList:AddColumn("#playerlist_time"):SetFixedWidth(60)
 	
 	local but_join = self.Container:Add("DButton")
 	but_join:SetTall(40)
@@ -52,8 +81,9 @@ function PANEL:InitEx()
 	
 	self.Title:Dock(TOP)
 	
-	self.IPLabel:DockMargin(0, 8, 0, 8)
-	self.IPLabel:Dock(TOP)
+	--self.ServerInfoRow:DockMargin(0, 8, 0, 8)
+	self.ServerInfoRow:DockMargin(0, 3, 0, 3)
+	self.ServerInfoRow:Dock(TOP)
 	
 	self.PlayerList:Dock(FILL)
 	
@@ -102,6 +132,35 @@ function PANEL:SetServerData(data)
 	end)
 end
 
+local function formatTime(time)
+	time = math.Round(time)
+	
+	local num1
+	local num2
+	
+	num2 = time % 60
+	
+	if time < 60 then
+		return string.format("%ds", num2)
+	elseif time == 60 then
+		return "1m"
+	end
+	
+	time = (time - num2) / 60
+	
+	num1 = time % 60
+	
+	if time < 60 then
+		return string.format("%dm %ds", num1, num2)
+	elseif time == 60 then
+		return "1h"
+	end
+	
+	time = (time - num1) / 60
+	
+	return string.format("%dh %dm", time, num1)
+end
+
 function PANEL:OnPlayersReceived(players)
 	self.PlayerList:Clear()
 	
@@ -114,7 +173,7 @@ function PANEL:OnPlayersReceived(players)
 		
 		self.PlayerList:AddLine(ply_data.name,
 			tostring(ply_data.score),
-			tostring(math.Round(ply_data.time))
+			tostring(formatTime(ply_data.time))
 		)
 	end
 end
