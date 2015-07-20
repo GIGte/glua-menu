@@ -11,7 +11,7 @@ end
 function PANEL:PerformLayout()
 	local pool = OptionsFactory.Pool
 	
-	local y = 0
+	local y = self.enlarged and 37 or 20
 	
 	if self.Title:IsVisible() then
 		y = y + 65
@@ -23,10 +23,23 @@ function PANEL:PerformLayout()
 		if not button:IsVisible() then break end
 		
 		button:SetPos(0, y)
+		button:SetEnlarged(self.enlarged)
 		button:SizeToContents()--button:SetWidth(w)
 		
-		y = y + button:GetTall() + (button.groupend and 19 or -1)
+		y = y + button:GetTall()
+		
+		if self.enlarged then
+			y = y + (button.groupend and 29 or 2)
+		else
+			y = y + (button.groupend and 19 or -1)
+		end
 	end
+end
+
+function PANEL:SetEnlarged(state)
+	self.enlarged = state
+	
+	self.Title:SetEnlarged(state)
 end
 
 function PANEL:ReflectData(options_table)

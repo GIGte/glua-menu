@@ -12,9 +12,21 @@ surface.CreateFont("Menu_ButtonLabel_Shadow", {
 	blursize = 0
 })
 
+surface.CreateFont("Menu_ButtonLabel_B", {
+	font	= "Arial",
+	size	= 27,
+	weight	= 900
+})
+surface.CreateFont("Menu_ButtonLabel_B_Shadow", {
+	font	= "Arial",
+	size	= 27,
+	weight	= 900,
+	blursize = 0
+})
+
 
 local col_default = color_white
-local col_hovered = Color(255,255,170)
+local col_hovered = Color(255, 255, 170)
 
 local PANEL = {}
 
@@ -30,9 +42,24 @@ function PANEL:Init()
 	self:SetPaintBackgroundEnabled(false)
 	self:SetPaintBorderEnabled(false)
 	
-	self:SetFontInternal("Menu_ButtonLabel")
+	self:SetEnlarged(false)
 	
 	self:SetFGColor(col_default)
+end
+
+function PANEL:SetEnlarged(state)
+	local font, font_shadow
+	
+	if state then
+		font = "Menu_ButtonLabel_B"
+		font_shadow = "Menu_ButtonLabel_B_Shadow"
+	else
+		font = "Menu_ButtonLabel"
+		font_shadow = "Menu_ButtonLabel_Shadow"
+	end
+	
+	self:SetFontInternal(font)
+	self.font_shadow = font_shadow
 end
 
 function PANEL:SetCommand(command)
@@ -55,7 +82,7 @@ end
 
 function PANEL:Paint()
 	surface.SetTextColor(0, 0, 0, 255)
-	surface.SetFont("Menu_ButtonLabel_Shadow")
+	surface.SetFont(self.font_shadow)
 	surface.SetTextPos(2, 2)
 	surface.DrawText(self:GetText()) -- possible opz
 end

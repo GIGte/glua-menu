@@ -4,7 +4,7 @@ local PANEL = {}
 function PANEL:Init()
 	self:MakePopup()
 	self:SetPopupStayAtBack(true)
-	self:MoveToBack()
+	--self:MoveToBack()
 	
 	self.UpperBar = self:Add("UpperBar")
 	self.UpperBar:SetHeight(30)
@@ -36,10 +36,12 @@ function PANEL:PerformLayout(w, h)
 		
 		if self.GMLogo:IsVisible() then
 			self.GMLogo:DockMargin(left, top, 0, 0)
-			self.Menu:DockMargin(left, 20, 0, 0)
+			self.Menu:DockMargin(left, 0, 0, 0)
 		else
 			self.Menu:DockMargin(left, top, 0, 0)
 		end
+		
+		self.Menu:SetEnlarged(w > 1280)
 	end
 end
 
