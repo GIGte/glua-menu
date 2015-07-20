@@ -16,7 +16,7 @@ function PANEL:InitEx()
 	self.IPLabel:SetDark(true)
 	
 	self.PlayerList = self.Container:Add("DListView")
-	self.PlayerList:SetSortable(false)
+	--self.PlayerList:SetSortable(false)
 	self.PlayerList:SetMultiSelect(false)
 	
 	self.PlayerList:AddColumn("#playerlist_name")
@@ -114,7 +114,7 @@ function PANEL:OnPlayersReceived(players)
 		
 		self.PlayerList:AddLine(ply_data.name,
 			tostring(ply_data.score),
-			tostring(ply_data.time)
+			tostring(math.Round(ply_data.time))
 		)
 	end
 end
