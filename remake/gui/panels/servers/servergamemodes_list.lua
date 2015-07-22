@@ -12,8 +12,9 @@ function PANEL:Init()
 		self.Title:SetText("#servers_gamemodes")
 		self.Title:SizeToContents()
 		
-		self.Info = self.Header:Add("DLabel") -- TODO: font
+		self.Info = self.Header:Add("DLabel")
 		self.Info:SetColor(color_white)
+		self.Info:SetFont("Menu_ServersSubtitle")
 		self.Info:SetText("#servers_gamemodes.subtitle")
 		self.Info:SizeToContents()
 		
@@ -74,6 +75,12 @@ end
 
 function PANEL:AddElement(gm_data)
 	local panel = self.ScrollPanel:Add("ServerGamemodeItem")
+	
+	gm_data.Panel = panel
+	
+	gm_data.ServerCount = 0
+	gm_data.PlayerCount = 0
+	
 	panel:SetGamemodeData(gm_data)
 	
 	--panel:DockMargin(0, 5, 0, 0)
@@ -90,11 +97,6 @@ function PANEL:AddElement(gm_data)
 	end
 	
 	table.insert(self.items, panel)
-	
-	gm_data.Panel = panel
-	
-	gm_data.ServerCount = 0
-	gm_data.PlayerCount = 0
 end
 
 function PANEL:UpdateInfo(gm_data, server_data)

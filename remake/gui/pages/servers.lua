@@ -1,4 +1,12 @@
 
+surface.CreateFont("Menu_ServersSubtitle", {
+	font	= "Arial",
+	size	= 15,
+	weight	= 500,
+	shadow	= true
+})
+
+
 local PANEL = {}
 
 PANEL.Title = "#server_list"
@@ -104,6 +112,7 @@ function PANEL:OnServerFound(query_id, data)
 			TitleVariatons = {},
 			WorkshopID = data.wsid,
 			WorkshopIDVariatons = {},
+			IsSubscribed = true,
 		}
 		
 		self.ServersTable[data.gamemode] = gm_data
@@ -118,9 +127,20 @@ function PANEL:OnServerFound(query_id, data)
 		gm_data.Title = table.GetWinningKey(vars)
 		
 		local vars = gm_data.WorkshopIDVariatons
-		vars[data.desc] = (vars[data.wsid] or 0) + 1
+		vars[data.wsid] = (vars[data.wsid] or 0) + 1
 		
 		gm_data.WorkshopID = table.GetWinningKey(vars)
+	end
+	
+	local wsid = gm_data.WorkshopID
+	
+	if wsid and wsid ~= "" then
+		if gm_data.Name == "sandbox" then print(wsid) end
+		local is_subscr = steamworks.IsSubscribed(wsid)
+		
+		gm_data.IsSubscribed = is_subscr
+	else
+		gm_data.IsSubscribed = true
 	end
 	
 	self.ServerGamemodesList:UpdateInfo(gm_data, data)
