@@ -44,21 +44,49 @@ function PANEL:InitEx()
 		local category = mapinfo and mapinfo.Category or nil
 		
 		
-		local mapcats = mapbox:Add("MapCategoryList")
-		mapcats:SetWide(190)
-		mapcats:SetLastCategory(category)
+		local mapcats_container = mapbox:Add("Panel")
+		mapcats_container:SetWide(190)
+		
+		local mapcats
+		
+		do
+			mapcats = mapcats_container:Add("MapCategoryList")
+			mapcats:SetLastCategory(category)
+			
+			local searchbox = mapcats_container:Add("DTextEntryWHint")
+			searchbox:SetTall(24)
+			searchbox:SetPlaceholder("#searchbar_placeholer")
+			
+			searchbox.OnChange = function(pnl)
+				mapcats:FilterByText(string.lower(pnl:GetText()))
+			end
+			
+			mapcats:Dock(FILL)
+			searchbox:Dock(BOTTOM)
+		end
+		
+		local catheader = mapbox:Add("MapList_Header")
+		catheader:SetTall(55)
 		
 		local maplist_spanel = mapbox:Add("DScrollPanel")
 		
-		local maplist = maplist_spanel:Add("MapList")
-		maplist:SetLastMap(map)
+		local maplist
 		
-		maplist:Dock(FILL)
+		do
+			maplist = maplist_spanel:Add("MapList")
+			maplist:SetLastMap(map)
+			
+			maplist:Dock(FILL)
+		end
 		
+		mapcats:SetHeaderPanel(catheader)
 		mapcats:SetMapListPanel(maplist)
 		
-		mapcats:DockMargin(0, 0, 15, 0)
-		mapcats:Dock(LEFT)
+		mapcats_container:DockMargin(0, 0, 15, 0)
+		mapcats_container:Dock(LEFT)
+		
+		catheader:Dock(TOP)
+		
 		maplist_spanel:Dock(FILL)
 		
 		
