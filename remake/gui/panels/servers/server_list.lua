@@ -10,8 +10,9 @@ function PANEL:Init()
 		do
 			self.Title = self.Header:Add("MenuTitle")
 			
-			self.Info = self.Header:Add("DLabel") -- TODO: font
+			self.Info = self.Header:Add("DLabel")
 			self.Info:SetColor(color_white)
+			self.Info:SetFont("Menu_ServersSubtitle")
 			self.Info:SetText("#join_a_server")
 			self.Info:SizeToContents()
 			
@@ -39,10 +40,10 @@ function PANEL:Init()
 			self.SearchBox:SetPlaceholder("#searchbar_placeholer") -- typo :\
 			
 			self.SearchBox.OnChange = function(pnl)
-				self.search_filter = pnl:GetText()
+				self.search_text = string.lower(pnl:GetText())
 				
 				self:FilterList()
-				self.ServerList:DataLayout(true)
+				self.ServerList:DataLayout()
 			end
 			
 			self.SearchBox:DockMargin(0, 2, 0, 2)--0, 5, 0, 5)
@@ -70,6 +71,8 @@ function PANEL:Init()
 		self.ServerList:AddColumn("#server_players"):SetMaxWidth(70)
 		self.ServerList:AddColumn("#server_ping"):SetMaxWidth(50)
 		self.ServerList:AddColumn("#server_ranking"):SetMaxWidth(80)
+		
+		-- TODO: arrow control
 		
 		self.ServerList.OnRowSelected = function(pnl, id, line)
 			self:OnServerSelected(line.data)
@@ -137,11 +140,11 @@ function PANEL:UpdateGamemodeData(gm_data)
 end
 
 function PANEL:SearchTest(str)
-	if self.search_filter == "" or not self.search_filter then
+	if self.search_text == "" or not self.search_text then
 		return true
 	end
 	
-	local s, e = string.find(str, self.search_filter, 1, true)
+	local s, e = string.find(str, self.search_text, 1, true)
 	
 	return s ~= nil
 end
@@ -149,7 +152,7 @@ end
 function PANEL:FilterList()
 	local lines = self.ServerList:GetLines()
 	
-	if self.search_filter == "" then
+	if self.search_text == "" then
 		for i = 1, #lines do
 			local line = lines[i]
 			
@@ -162,7 +165,7 @@ function PANEL:FilterList()
 	for i = 1, #lines do
 		local line = lines[i]
 		
-		line:SetVisible(self:SearchTest(line.data.name))
+		line:SetVisible(self:SearchTest(line.data.name_test))
 	end
 end
 
@@ -212,13 +215,15 @@ function PANEL:AddServer(data)
 	line:SetSortValue(3, data.players)
 	line:SetSortValue(4, data.ping)
 	
-	if not self:SearchTest(data.name) then
+	data.name_test = string.lower(data.name)
+	
+	if not self:SearchTest(data.name_test) then
 		line:Hide()
 	end
 end
 
 function PANEL:ClearServers()
-	self.ServerList:Clear()
+	self.ServerList:Clear() -- TODO: pool
 end
 
 function PANEL:OnServerSelected(data)
