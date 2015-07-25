@@ -1,31 +1,41 @@
 
 local PANEL = {}
 
-local controls_def = {
-	--{ name = "#resume_game", cmd = "resume_game", groupend = true },
-	{ name = "#new_game", cmd = "new_game" },
-	{ name = "#find_mp_game", cmd = "find_mp_game", groupend = true },
-	{ name = "#addons", cmd = "addons", groupend = true },
-	--{ name = "#demos", cmd = "demos" },
-	--{ name = "#saves", cmd = "saves", groupend = true },
-	{ name = "#options", cmd = "options", groupend = true },
-	--{ name = "#disconnect", cmd = "disconnect" },
-	{ name = "#quit", cmd = "quit" },
-}
+function PANEL:SetupMenuControls(panel, in_game)
+	if in_game then
+		panel:AddOption("#resume_game", "resume_game")
+		
+		panel:InsertSpace()
+	end
+	
+	panel:AddOption("#new_game", "new_game")
+	panel:AddOption("#find_mp_game", "find_mp_game")
+	
+	panel:InsertSpace()
+	
+	panel:AddOption("#addons", "addons")
+	
+	panel:InsertSpace()
+	
+	--panel:AddOption("#demos", "demos")
+	--panel:AddOption("#saves", "saves")
+	
+	--panel:InsertSpace()
+	
+	panel:AddOption("#options", "options")
+	
+	panel:InsertSpace()
+	
+	if in_game then
+		panel:AddOption("#disconnect", "disconnect")
+	end
+	
+	panel:AddOption("#quit", "quit")
+end
 
-local controls_ingame = {
-	{ name = "#resume_game", cmd = "resume_game", groupend = true },
-	{ name = "#new_game", cmd = "new_game" },
-	{ name = "#find_mp_game", cmd = "find_mp_game", groupend = true },
-	{ name = "#addons", cmd = "addons", groupend = true },
-	--{ name = "#demos", cmd = "demos" },
-	--{ name = "#saves", cmd = "saves", groupend = true },
-	{ name = "#options", cmd = "options", groupend = true },
-	{ name = "#disconnect", cmd = "disconnect" },
-	{ name = "#quit", cmd = "quit" },
-}
-
-PANEL.Controls = controls_def
+function PANEL:Init()
+	hook.Add("InGameStateChanged", self, self.InGameChanged)
+end
 
 function PANEL:Open()
 	
@@ -35,12 +45,16 @@ function PANEL:Close()
 	
 end
 
-function PANEL:SetInGame(state)
-	if state then
-		self.Controls = controls_ingame
-	else
-		self.Controls = controls_def
-	end
+function PANEL:InGameChanged(state)
+	local menu_panel = self.MenuOptionsPanel
+	
+	if not menu_panel then return end
+	
+	menu_panel:Clear()
+	
+	self:SetupMenuControls(menu_panel, state)
+	
+	menu_panel:InvalidateLayout(true)
 end
 
 --[[function PANEL:Paint(w, h)

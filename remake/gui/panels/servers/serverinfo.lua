@@ -66,7 +66,7 @@ function PANEL:InitEx()
 	end
 	
 	self.PasswordBox = self.Container:Add("DTextEntryWHint")
-	self.PasswordBox:SetPlaceholder("Password")
+	self.PasswordBox:SetPlaceholder("••••••••••")--"Password")
 	
 	self.Title:Dock(TOP)
 	

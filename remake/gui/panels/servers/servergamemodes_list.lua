@@ -10,7 +10,9 @@ function PANEL:Init()
 	do
 		self.Title = self.Header:Add("MenuTitle")
 		self.Title:SetText("#servers_gamemodes")
-		self.Title:SizeToContents()
+		--self.Title:SizeToContents()
+		self.Title:SizeToContentsX(2)
+		self.Title:SizeToContentsX(2)
 		
 		self.Info = self.Header:Add("DLabel")
 		self.Info:SetColor(color_white)
@@ -36,11 +38,26 @@ function PANEL:Init()
 	self.Header:DockMargin(0, 0, 0, 18)
 	self.Header:Dock(TOP)
 	
-	self.ScrollPanel:DockMargin(5, 5, 5, 0)
+	--self.ScrollPanel:DockMargin(5, 5, 5, 0)
 	self.ScrollPanel:Dock(FILL)
 end
 
 function PANEL:PerformLayout(w, h)
+	local lmargin = ScrW() < 1280 and 16 or
+		w - 32 > 1050 and (w - 1050) * 0.5 or
+		w * 0.2 * 0.5
+	
+	local rmargin
+	
+	if ScrW() < 1280 then
+		rmargin = lmargin
+	else
+		rmargin = lmargin * 1.6
+		lmargin = lmargin * 0.9
+	end
+	
+	self.ScrollPanel:DockMargin(lmargin, 5, rmargin, 0)
+	
 	local canvas = self.ScrollPanel:GetCanvas()
 	local cw, ch = canvas:GetSize()
 	
@@ -97,6 +114,8 @@ function PANEL:AddElement(gm_data)
 	end
 	
 	table.insert(self.items, panel)
+	
+	self:InvalidateLayout(true)
 end
 
 function PANEL:UpdateInfo(gm_data, server_data)

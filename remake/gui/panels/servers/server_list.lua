@@ -136,7 +136,9 @@ end
 
 function PANEL:UpdateGamemodeData(gm_data)
 	self.Title:SetText(gm_data.Title)
-	self.Title:SizeToContents()
+	--self.Title:SizeToContents()
+	self.Title:SizeToContentsX(2)
+	self.Title:SizeToContentsX(2)
 end
 
 function PANEL:SearchTest(str)

@@ -11,11 +11,52 @@ local PANEL = {}
 
 PANEL.Title = "#server_list"
 
-PANEL.Controls = {
-	{ name = "#servers_refresh", cmd = "servers_refresh" },
-	{ name = "#servers_stoprefresh", cmd = "servers_stoprefresh", groupend = true },
-	{ name = "#legacy_browser", cmd = "legacy_browser" },
-}
+local query_data
+
+local function refreshDoClick(pnl)
+	if pnl.is_off then
+		pnl:SetText("#servers_stoprefresh")
+		pnl:SizeToContentsX()
+		
+		RunCommand("servers_refresh")
+	else
+		pnl:SetText("#servers_refresh")
+		pnl:SizeToContentsX()
+		
+		RunCommand("servers_stoprefresh")
+	end
+	
+	pnl.is_off = not pnl.is_off
+end
+
+local function queryTypeCallback(pnl, button, id)
+	query_data.Type = id
+	
+	--pnl.page:StartRefreshing()
+	local but_refresh = pnl.page.M_RefreshButton
+	but_refresh.is_off = true
+	refreshDoClick(but_refresh)
+end
+
+function PANEL:SetupMenuControls(panel)
+	
+	local selector = panel:AddSelector(queryTypeCallback)
+	selector.page = self
+	
+		selector:AddOption("#servers_internet", "internet")
+		selector:AddOption("#servers_favorites", "favorite")
+		selector:AddOption("#servers_history", "history")
+		selector:AddOption("#servers_local", "lan")
+	
+	panel:InsertSpace()
+	
+	self.M_RefreshButton =
+		panel:AddOption("#servers_stoprefresh", refreshDoClick)
+	
+	panel:InsertSpace()
+	
+	panel:AddOption("#legacy_browser", "legacy_browser")
+end
 
 function PANEL:InitEx()
 	self.ServerGamemodesList = self:Add("ServerGamemodesList")
@@ -27,7 +68,7 @@ function PANEL:InitEx()
 	self.ServerList = self:Add("ServerList")
 	self.ServerList:Hide()
 	
-	self.ServerGamemodesList:DockMargin(0, 0, 120, 20)
+	self.ServerGamemodesList:DockMargin(0, 0, 0, 20)--120, 20)
 	self.ServerGamemodesList:Dock(FILL)
 	
 	self.ServerList:DockMargin(0, 0, 0, 20)
@@ -67,8 +108,6 @@ function PANEL:GoToGamemodeList()
 	self.ServerGamemodesList:Show()
 	self.ServerList:Hide()
 end
-
-local query_data
 
 function PANEL:StartRefreshing()
 	self.ServerList:ClearServers()
@@ -165,6 +204,8 @@ end
 
 function PANEL:OnSearchFinished()
 	print("Search finished!")
+	
+	refreshDoClick(self.M_RefreshButton)
 end
 
 query_data = {

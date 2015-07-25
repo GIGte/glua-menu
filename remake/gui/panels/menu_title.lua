@@ -58,7 +58,7 @@ end
 function PANEL:Paint()
 	surface.SetTextColor(0, 0, 0, 255)
 	surface.SetFont(self.font_shadow)
-	surface.SetTextPos(2, 2)
+	surface.SetTextPos(2, self:GetDock() == TOP and 2 or 2-5)
 	surface.DrawText(self:GetText()) -- possible opz
 end
 
