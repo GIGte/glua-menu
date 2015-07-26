@@ -93,6 +93,9 @@ function PANEL:InitEx()
 		maplist.OnSelect = function(pnl, map_name)
 			self.GameSettings["map"] = map_name
 		end
+		maplist.DoDoubleClick = function(pnl)
+			return StartGame(self.GameSettings)
+		end
 	end
 	
 	

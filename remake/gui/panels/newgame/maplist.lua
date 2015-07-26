@@ -83,4 +83,8 @@ function PANEL:OnSelect(map_name)
 	
 end
 
+function PANEL:DoDoubleClick()
+	
+end
+
 vgui.Register("MapList", PANEL, "DIconLayout")
