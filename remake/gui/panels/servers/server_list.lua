@@ -151,6 +151,14 @@ function PANEL:SearchTest(str)
 	return s ~= nil
 end
 
+function PANEL:TestData(data)
+	local server_name = data.name_test
+	local server_map = data.map_test
+	
+	return self:SearchTest(server_name)
+		or self:SearchTest(server_map)
+end
+
 function PANEL:FilterList()
 	local lines = self.ServerList:GetLines()
 	
@@ -167,7 +175,7 @@ function PANEL:FilterList()
 	for i = 1, #lines do
 		local line = lines[i]
 		
-		line:SetVisible(self:SearchTest(line.data.name_test))
+		line:SetVisible(self:TestData(line.data))
 	end
 end
 
@@ -218,8 +226,9 @@ function PANEL:AddServer(data)
 	line:SetSortValue(4, data.ping)
 	
 	data.name_test = string.lower(data.name)
+	data.map_test = string.lower(data.map)
 	
-	if not self:SearchTest(data.name_test) then
+	if not self:TestData(data) then
 		line:Hide()
 	end
 end
