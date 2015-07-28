@@ -43,7 +43,21 @@ function PANEL:Init()
 				self.search_text = string.lower(pnl:GetText())
 				
 				self:FilterList()
-				self.ServerList:DataLayout()
+				
+				local y = self.ServerList:DataLayout()
+				self.ServerList:GetCanvas():SetTall(y)
+				
+				-- FIXME
+				
+				y = y - self.ServerList:GetTall()
+				
+				local vbar = self.ServerList.VBar
+				
+				if vbar:GetScroll() > y then
+					self.ServerList:InvalidateLayout(true)
+					vbar:InvalidateLayout(true)
+					vbar:AddScroll(0)--vbar:SetScroll(y)
+				end
 			end
 			
 			self.SearchBox:DockMargin(0, 2, 0, 2)--0, 5, 0, 5)
@@ -81,31 +95,31 @@ function PANEL:Init()
 			JoinServer(line.data.address)
 		end
 		
-		self.ServerList:DockMargin(8, 8, 8, 8)
-		self.ServerList:Dock(FILL)
-	end
-	
-	self.ServerList.DataLayout = function(self)
-		local y = 0
-		local h = self.m_iDataHeight
-		
-		local b = true
-		
-		for k, v in ipairs( self.Sorted ) do
-			if v:IsVisible() then
-				v:SetPos( 1, y )
-				v:SetSize( self:GetWide()-2, h )
-				v:DataLayout( self ) 
-				
-				v:SetAltLine( b )
-				
-				b = not b
-				
-				y = y + v:GetTall()
+		self.ServerList.DataLayout = function(self)
+			local y = 0
+			local h = self.m_iDataHeight
+			
+			local b = true
+			
+			for k, v in ipairs( self.Sorted ) do
+				if v:IsVisible() then
+					v:SetPos( 1, y )
+					v:SetSize( self:GetWide()-2, h )
+					v:DataLayout( self ) 
+					
+					v:SetAltLine( b )
+					
+					b = not b
+					
+					y = y + v:GetTall()
+				end
 			end
+			
+			return y
 		end
 		
-		return y
+		self.ServerList:DockMargin(8, 8, 8, 8)
+		self.ServerList:Dock(FILL)
 	end
 	
 	self.ServerInfo = self:Add("ServerInfo")
@@ -225,7 +239,7 @@ function PANEL:AddServer(data)
 	line:SetSortValue(3, data.players)
 	line:SetSortValue(4, data.ping)
 	
-	data.name_test = string.lower(data.name)
+	data.name_test = string.lower(data.name) -- TODO: unicode support
 	data.map_test = string.lower(data.map)
 	
 	if not self:TestData(data) then
