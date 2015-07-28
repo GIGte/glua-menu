@@ -218,8 +218,11 @@ local function determineRanking(data)
 end
 
 local function getRank(value)
-	value = math.floor(value / 100)
-	return value > 5 and 5 or value
+	if value < 50  then return 5 end
+	if value < 100 then return 4 end
+	if value < 200 then return 3 end
+	if value < 300 then return 2 end
+	return 1
 end
 
 function PANEL:AddServer(data)
