@@ -80,6 +80,8 @@ function PANEL:Init()
 		self.ServerList = self.ListPanel:Add("DListView")
 		self.ServerList:SetMultiSelect(false)
 		
+		--self.ServerList:AddColumn("P"):SetFixedWidth(16)
+		--self.ServerList:AddColumn("V"):SetFixedWidth(16)
 		self.ServerList:AddColumn("#server_name_header")
 		self.ServerList:AddColumn("#server_mapname"):SetMaxWidth(140)
 		self.ServerList:AddColumn("#server_players"):SetMaxWidth(70)
@@ -222,11 +224,13 @@ end
 
 function PANEL:AddServer(data)
 	local pl_count = string.format("%d / %d", data.players, data.maxplayers)
+	
 	local rank = determineRanking(data)
 	rank = getRank(rank)
-	rank = string.rep("* "--[[☆]], rank)--string.format("%d / 5", rank)
+	rank = string.rep("* ", rank)
 	
 	local line = self.ServerList:AddLine(
+		--data.pass and "▪"--[["##"]] or "",
 		data.name,
 		data.map,
 		pl_count,

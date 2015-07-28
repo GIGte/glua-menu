@@ -142,6 +142,8 @@ function PANEL:OnServerFound(query_id, data)
 		wsid
 	]]
 	
+	data.hasmap = g_MapList[data.map] ~= nil
+	
 	local gm_data = self.ServersTable[data.gamemode]
 	
 	if not gm_data then
