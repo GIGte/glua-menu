@@ -14,7 +14,7 @@ PANEL.Title = "#server_list"
 local query_data
 
 local function refreshDoClick(pnl)
-	pnl:ChangeRefresh(not pnl.is_on)
+	pnl:ChangeRefresh(pnl.is_off)
 end
 
 local function refreshChangeRefresh(pnl, state)
@@ -30,7 +30,7 @@ local function refreshChangeRefresh(pnl, state)
 		RunCommand("servers_stoprefresh")
 	end
 	
-	pnl.is_on = state
+	pnl.is_off = not state
 end
 
 function PANEL:SetupMenuControls(panel)
