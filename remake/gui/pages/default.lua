@@ -52,9 +52,18 @@ function PANEL:InGameChanged(state)
 	
 	menu_panel:Clear()
 	
-	self:SetupMenuControls(menu_panel, state)
+	-- I understand nothing
+	-- FIXME
 	
-	menu_panel:InvalidateLayout(true)
+	timer.Simple(0, function()
+		if self:IsValid() then
+			menu_panel:InvalidateLayout(true)
+			self:SetupMenuControls(menu_panel, state)
+			
+			menu_panel:InvalidateLayout(true)
+			menu_panel:InvalidateLayout()
+		end
+	end)
 end
 
 --[[function PANEL:Paint(w, h)

@@ -7,11 +7,12 @@ end
 
 function PANEL:CreateButton(name, command, parent) -- internal
 	local button = vgui.Create("MenuButton", parent)
-	button:SetEnlarged(self.enlarged)
 	button:SetText(name)
 	button:SetCommand(command)
 	--button:SizeToContentsX(2)
 	button:SizeToContentsY(2)
+	
+	button:SetEnlarged(self.enlarged) -- this affects size!
 	
 	return button
 end
