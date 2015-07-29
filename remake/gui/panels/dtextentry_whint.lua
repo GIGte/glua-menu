@@ -14,6 +14,7 @@ function PANEL:Paint(w, h)
 	
 	if self:GetText() == "" then
 		surface.SetTextColor(130, 130, 130)
+		surface.SetFont("DermaDefault")
 		surface.SetTextPos(6, math.floor(h / 2) - 7)
 		surface.DrawText(self.hint)
 	end
