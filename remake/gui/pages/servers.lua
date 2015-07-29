@@ -14,7 +14,11 @@ PANEL.Title = "#server_list"
 local query_data
 
 local function refreshDoClick(pnl)
-	if pnl.is_off then
+	pnl:ChangeRefresh(not pnl.is_on)
+end
+
+local function refreshChangeRefresh(pnl, state)
+	if state then
 		pnl:SetText("#servers_stoprefresh")
 		pnl:SizeToContentsX()
 		
@@ -26,22 +30,17 @@ local function refreshDoClick(pnl)
 		RunCommand("servers_stoprefresh")
 	end
 	
-	pnl.is_off = not pnl.is_off
-end
-
-local function queryTypeCallback(pnl, button, id)
-	query_data.Type = id
-	
-	--pnl.page:StartRefreshing()
-	local but_refresh = pnl.page.M_RefreshButton
-	but_refresh.is_off = true
-	refreshDoClick(but_refresh)
+	pnl.is_on = state
 end
 
 function PANEL:SetupMenuControls(panel)
+	local function queryTypeCallback(pnl, button, id)
+		query_data.Type = id
+		
+		self:ChangeRefresh(true)
+	end
 	
 	local selector = panel:AddSelector(queryTypeCallback)
-	selector.page = self
 	
 		selector:AddOption("#servers_internet", "internet")
 		selector:AddOption("#servers_favorites", "favorite")
@@ -50,12 +49,19 @@ function PANEL:SetupMenuControls(panel)
 	
 	panel:InsertSpace()
 	
-	self.M_RefreshButton =
+	local but_refresh =
 		panel:AddOption("#servers_stoprefresh", refreshDoClick)
+	but_refresh.ChangeRefresh = refreshChangeRefresh
+	
+	self.M_RefreshButton = but_refresh
 	
 	panel:InsertSpace()
 	
 	panel:AddOption("#legacy_browser", "legacy_browser")
+end
+
+function PANEL:ChangeRefresh(state)
+	self.M_RefreshButton:ChangeRefresh(state)
 end
 
 function PANEL:InitEx()
@@ -86,7 +92,7 @@ function PANEL:Open()
 end
 
 function PANEL:Close()
-	self:StopRefreshing()
+	self:ChangeRefresh(false)
 end
 
 function PANEL:GoToServerList(gm_data)
@@ -207,7 +213,7 @@ end
 function PANEL:OnSearchFinished()
 	print("Search finished!")
 	
-	refreshDoClick(self.M_RefreshButton)
+	self:ChangeRefresh(false)
 end
 
 query_data = {
