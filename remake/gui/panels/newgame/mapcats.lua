@@ -34,6 +34,8 @@ function PANEL:SelectCategoryButton(catbutton) -- internal
 	
 	local maps = g_MapListCategorised[cat_name]
 	
+	table.sort(maps)
+	
 	self.maplist:ReflectData(maps, self.search_text,
 		cat_name == "Left 4 Dead 2" or cat_name == "Portal 2" or cat_name == "CS: Global Offensive")
 end
@@ -87,7 +89,7 @@ function PANEL:OnGameContentChanged()
 	
 	-- TODO: sandbox should be first
 	
-	for k, v in pairs(g_MapListCategorised) do
+	for k, v in SortedPairs(g_MapListCategorised) do
 		local count = self:MapsCount(v)
 		
 		if count == 0 then
