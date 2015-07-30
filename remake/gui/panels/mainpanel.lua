@@ -4,7 +4,7 @@ local PANEL = {}
 function PANEL:Init()
 	self:MakePopup()
 	self:SetPopupStayAtBack(true)
-	self:MoveToBack()
+	--self:MoveToBack()
 	
 	self.UpperBar = self:Add("UpperBar")
 	self.UpperBar:SetHeight(30)
@@ -14,8 +14,8 @@ function PANEL:Init()
 	self.NavBar = self:Add("NavigationBar")
 	self.NavBar:SetHeight(50)
 	
-	self.Menu = self:Add("MenuOptions")
-	self.Menu:SetWidth(300)
+	self.Menu = self:Add("MenuContainer")
+	--self.Menu:SetWidth(300)
 	
 	self:Dock(FILL)
 	
@@ -32,14 +32,18 @@ end
 function PANEL:PerformLayout(w, h)
 	do -- keeping the same behaviour
 		local left = w > 1280 and 85 or 70
-		local top = h > 480 and 40 or -10
+		local top = h > 480 and 45 or -10
 		
 		if self.GMLogo:IsVisible() then
 			self.GMLogo:DockMargin(left, top, 0, 0)
-			self.Menu:DockMargin(left, 20, 0, 0)
+			self.Menu:DockMargin(left, 0, 0, 0)
 		else
 			self.Menu:DockMargin(left, top, 0, 0)
 		end
+		
+		self.Menu:SetWidth(w > 1280 and 300 or 200) -- differs here
+		
+		self.Menu:SetEnlarged(w > 1280)
 	end
 end
 
@@ -47,19 +51,25 @@ function PANEL:PlacePage(page)
 	page:SetParent(self)
 	page:Dock(FILL)
 	
-	self.GMLogo:SetVisible(page.Title == nil and page.Controls ~= nil)
-	self.Menu:SetTitle(page.Title)
+	local title, menu_panel = page.Title, page.MenuOptionsPanel
+	
+	self.GMLogo:SetVisible(title == nil and menu_panel ~= nil)
+	
+	self.Menu:SetTitle(title)
+	self.Menu:PlaceMenuOptions(menu_panel)
+	
+	self.Menu:SetVisible(menu_panel ~= nil)
 	
 	self:InvalidateLayout(true)
 end
 
-function PANEL:SetOptions(options_table)
+--[[function PANEL:SetOptions(options_table)
 	if options_table then
 		self.Menu:ReflectData(options_table)
 	end
 	
 	self.Menu:SetVisible(options_table ~= nil)
-end
+end]]
 
 function PANEL:OnGamemodeChanged(gamemode_name)
 	local path = "gamemodes/" .. gamemode_name .. "/logo.png"

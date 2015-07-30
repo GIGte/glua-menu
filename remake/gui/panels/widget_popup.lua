@@ -33,4 +33,4 @@ function PANEL:Paint(w, h)
 	end]]
 end
 
-vgui.Register("WidgetPopup", PANEL, "Panel")
+vgui.Register("WidgetPopup", PANEL, "EditablePanel")

@@ -4,7 +4,7 @@ WIDGET.Name = "Game Content Selector"
 WIDGET.Icon = "../html/img/games.png"
 
 function WIDGET:Initialize()
-	hook.Add("GameContentChanged", self, self.OnGameContentChanged)
+	--hook.Add("GameContentChanged", self, self.OnGameContentChanged)
 end
 
 function WIDGET:Destroy()
@@ -36,7 +36,11 @@ function WIDGET:BuildPanel(panel)
 	
 	local function cboxLabelOnChange(pnl, state)
 		engine.SetMounted(pnl.AppID, state)
-		print(string.format("App %d was %s!", pnl.AppID, state and "mounted" or "unmounted"))
+		
+		local msg = string.format("App %d was %s!", pnl.AppID,
+			state and "mounted" or "unmounted")
+		
+		print(msg)
 	end
 	
 	local games = engine.GetGames()
@@ -77,7 +81,8 @@ function WIDGET:BuildPanel(panel)
 			local icon = back:Add("DImage")
 			icon:SetPos(4, 2)
 			icon:SetSize(16, 16)
-			icon:SetImage(game.owned and "icon16/folder_delete.png" or "icon16/cross.png")
+			icon:SetImage(game.owned and "icon16/folder_delete.png"
+				or "icon16/cross.png")
 			
 			local label = back:Add("DLabel")
 			label:SetPos(30, 3)

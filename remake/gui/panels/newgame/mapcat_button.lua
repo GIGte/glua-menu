@@ -50,7 +50,13 @@ function PANEL:SetSelected(state)
 	self.is_selected = state
 end
 
+function PANEL:GetCount()
+	return self.count
+end
+
 function PANEL:SetCount(count)
+	self.count = count
+	
 	self.CountLabel:SetText(tostring(count))
 	self.CountLabel:SizeToContentsX(10)
 	

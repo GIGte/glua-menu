@@ -3,9 +3,9 @@ local PANEL = {}
 
 PANEL.Title = "#addons"
 
-PANEL.Controls = {
-	{ name = "#open_workshop", cmd = "open_workshop" },
-}
+function PANEL:SetupMenuControls(panel)
+	panel:AddOption("#open_workshop", "open_workshop")
+end
 
 function PANEL:InitEx()
 	self:DockMargin(16, 4, 16, 16)

@@ -9,6 +9,15 @@ function InitPage(name)
 	local page = vgui.CreateFromTable(tbl)
 	page:SetVisible(false)
 	
+	if page.SetupMenuControls then
+		local menu_panel = page:Add("MenuOptions")
+		menu_panel:Hide()
+		
+		page:SetupMenuControls(menu_panel)
+		
+		page.MenuOptionsPanel = menu_panel
+	end
+	
 	MainMenuView[name] = page
 	
 	return page

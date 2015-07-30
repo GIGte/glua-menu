@@ -4,6 +4,8 @@ local col_selected = Color(150, 200, 255)
 local PANEL = {}
 
 function PANEL:Init()
+	self.last_click = 0
+	
 	self:SetMouseInputEnabled(true)
 	self:SetKeyboardInputEnabled(false)
 	
@@ -76,6 +78,14 @@ end
 function PANEL:OnMouseReleased(mousecode)
 	if mousecode == MOUSE_LEFT then
 		self:GetParent():OnMapSelected(self)
+		
+		local time = SysTime()
+		
+		if self.last_click + 0.2 > time then
+			self:GetParent():DoDoubleClick()
+		end
+		
+		self.last_click = time
 	end
 end
 

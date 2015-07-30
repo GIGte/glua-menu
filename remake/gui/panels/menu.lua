@@ -5,46 +5,43 @@ function PANEL:Init()
 	self.Title = self:Add("MenuTitle")
 	self.Title:Hide()
 	
-	OptionsFactory.UpdateParent(self)
+	--self.MenuOptions = self:Add("MenuOptions")
+	
+	self.Title:DockMargin(0, 20, 0, 23)
+	self.Title:Dock(TOP)
+	
+	--self.MenuOptions:Dock(FILL)
 end
 
-function PANEL:PerformLayout()
-	local pool = OptionsFactory.Pool
+function PANEL:SetEnlarged(state)
+	self.enlarged = state
 	
-	local y = 0
+	self.Title:SetEnlarged(state)
 	
-	if self.Title:IsVisible() then
-		y = y + 65
-	end
+	self.Title:DockMargin(0, 20, 0, state and 23 or 9)
 	
-	for i = 1, #pool do
-		local button = pool[i]
-		
-		if not button:IsVisible() then break end
-		
-		button:SetPos(0, y)
-		button:SizeToContents()--button:SetWidth(w)
-		
-		y = y + button:GetTall() + (button.groupend and 19 or -1)
+	if self.MenuOptions then
+		self.MenuOptions:SetEnlarged(state)
 	end
 end
 
-function PANEL:ReflectData(options_table)
-	OptionsFactory.Reset()
-	
-	for i = 1, #options_table do
-		local opt = options_table[i]
-		
-		local button = OptionsFactory.GetNext()
-		button:SetText(opt.name)
-		button:SetCommand(opt.cmd)
-		button.groupend = opt.groupend
+function PANEL:PlaceMenuOptions(menu_panel)
+	if self.MenuOptions then
+		self.MenuOptions:Hide()
+		--self.MenuOptions:SetParent(nil)
 	end
 	
-	OptionsFactory.Finish()
+	if menu_panel then
+		menu_panel:SetParent(self)
+		menu_panel:Show()
+		
+		menu_panel:Dock(FILL)
+		menu_panel:SetEnlarged(self.enlarged)
+	end
 	
 	self:InvalidateLayout(true)
-	self:InvalidateChildren()
+	
+	self.MenuOptions = menu_panel
 end
 
 function PANEL:SetTitle(title)
@@ -62,4 +59,4 @@ function PANEL:SetTitle(title)
 	end
 end
 
-vgui.Register("MenuOptions", PANEL, "Panel")
+vgui.Register("MenuContainer", PANEL, "Panel")

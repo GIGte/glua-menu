@@ -1,7 +1,19 @@
 
--- called from the engine
-function LanguageChanged(lang)
-	hook.Run("LanguageChanged", lang)
+do
+	local first = true
+
+	timer.Simple(0, function()
+		first = false
+	end)
+
+	-- called from the engine
+	function LanguageChanged(lang)
+		if first then
+			return
+		end
+		
+		hook.Run("LanguageChanged", lang)
+	end
 end
 
 do

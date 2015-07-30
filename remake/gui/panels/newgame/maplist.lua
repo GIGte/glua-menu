@@ -12,8 +12,22 @@ function PANEL:SetLastMap(map_name)
 	self.last_map = map_name
 end
 
-function PANEL:ReflectData(maps, incompatible)
+function PANEL:TestString(str, filter) -- internal
+	if filter == "" or not filter then
+		return true
+	end
+	
+	local s, e = string.find(str, filter, 1, true)
+	
+	return s ~= nil
+end
+
+function PANEL:ReflectData(maps, filter, incompatible)
 	self:Clear()
+	
+	for k, v in pairs(self:GetChildren()) do
+		v:Hide() -- to skip them
+	end
 	
 	self.item_selected = nil
 	
@@ -23,6 +37,10 @@ function PANEL:ReflectData(maps, incompatible)
 	
 	for i = 1, #maps do
 		local map_name = maps[i]
+		
+		if not self:TestString(map_name, filter) then
+			continue
+		end
 		
 		local mapbutton = self:Add("MapButton")
 		mapbutton:SetMapName(map_name, incompatible)
@@ -37,8 +55,8 @@ function PANEL:ReflectData(maps, incompatible)
 		last_item = mapbutton
 	end
 	
-	-- We still have old children after self:Clear(),
-	-- so have to resize our canvas manually.
+	-- The old children are still present after self:Clear(),
+	-- so we have to resize our canvas manually.
 	
 	if last_item then -- HACK
 		self:LayoutIcons_TOP()
@@ -62,6 +80,10 @@ function PANEL:OnMapSelected(item)
 end
 
 function PANEL:OnSelect(map_name)
+	
+end
+
+function PANEL:DoDoubleClick()
 	
 end
 

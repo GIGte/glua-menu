@@ -12,7 +12,7 @@ MainMenu.CommandHandlers = {
 		return MainMenu.NavigateTo("NewGame")
 	end,
 	["find_mp_game"] = function()
-		return RunGameUICommand("OpenServerBrowser")
+		return MainMenu.NavigateTo("Servers")
 	end,
 	
 	["addons"] = function()
@@ -34,6 +34,17 @@ MainMenu.CommandHandlers = {
 	end,
 	["quit"] = function()
 		return RunGameUICommand("Quit")
+	end,
+	
+	["servers_refresh"] = function()
+		NavCurrent():StartRefreshing()
+	end,
+	["servers_stoprefresh"] = function()
+		NavCurrent():StopRefreshing()
+	end,
+	
+	["legacy_browser"] = function()
+		return RunGameUICommand("OpenServerBrowser")
 	end,
 	
 	["open_workshop"] = function()

@@ -7,18 +7,25 @@ function PANEL:Init()
 	local widgets = widgets.GetTable()
 	
 	-- keep the right order
-	if widgets["gamemode"] then -- FIXME
-		self:AddWidget(widgets["gamemode"])
-	end
-	if widgets["language"] then
-		self:AddWidget(widgets["language"])
-	end
-	if widgets["games"] then
-		self:AddWidget(widgets["games"])
+	local std_widgets = { -- FIXME
+		"gamemode",
+		"language",
+		"games",
+		"options",
+		"dev_refresh",
+	}
+	
+	for i = 1, #std_widgets do
+		local k = std_widgets[i]
+		local widget = widgets[k]
+		
+		if widget then
+			self:AddWidget(widget)
+		end
 	end
 	
 	for k, v in pairs(widgets) do
-		if k ~= "gamemode" and k ~= "language" and k ~= "games" then
+		if not table.HasValue(std_widgets, k) then
 			self:AddWidget(v)
 		end
 	end
