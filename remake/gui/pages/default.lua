@@ -1,7 +1,9 @@
 
 local PANEL = {}
 
-function PANEL:SetupMenuControls(panel, in_game)
+function PANEL:SetupMenuControls(panel)
+	local in_game = IsInGame()
+	
 	if in_game then
 		panel:AddOption("#resume_game", "resume_game")
 		
@@ -58,7 +60,7 @@ function PANEL:InGameChanged(state)
 	timer.Simple(0, function()
 		if self:IsValid() then
 			menu_panel:InvalidateLayout(true)
-			self:SetupMenuControls(menu_panel, state)
+			self:SetupMenuControls(menu_panel)
 			
 			menu_panel:InvalidateLayout(true)
 			menu_panel:InvalidateLayout()
