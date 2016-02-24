@@ -6,6 +6,10 @@ function PANEL:Init()
 	self:SetPopupStayAtBack(true)
 	--self:MoveToBack()
 	
+	if gui.IsConsoleVisible() then -- костыль
+		RunConsoleCommand("showconsole")
+	end
+	
 	self.UpperBar = self:Add("UpperBar")
 	self.UpperBar:SetHeight(30)
 	
@@ -30,7 +34,7 @@ function PANEL:Init()
 end
 
 function PANEL:PerformLayout(w, h)
-	do -- keeping the same behaviour
+	do -- keeping similar behaviour
 		local left = w > 1280 and 85 or 70
 		local top = h > 480 and 45 or -10
 		
