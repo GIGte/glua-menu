@@ -148,7 +148,7 @@ function PANEL:OnServerFound(query_id, data)
 		wsid
 	]]
 	
-	data.hasmap = g_MapList[data.map] ~= nil
+	data.hasmap = GetMapIndex()[data.map] ~= nil
 	
 	local gm_data = self.ServersTable[data.gamemode]
 	

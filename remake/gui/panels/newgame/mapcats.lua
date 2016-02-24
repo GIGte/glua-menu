@@ -32,7 +32,7 @@ function PANEL:SelectCategoryButton(catbutton) -- internal
 	self.header:SetTitle(cat_name)
 	self.header:SetCount(catbutton:GetCount())
 	
-	local maps = g_MapListCategorised[cat_name]
+	local maps = GetMapList()[cat_name]
 	
 	table.sort(maps)
 	

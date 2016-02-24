@@ -25,8 +25,10 @@ local function maxplayersOpenMenu(self)
 end
 
 function PANEL:InitEx()
+	local mapname, category = LoadLastMap()
+	
 	self.GameSettings = {
-		["map"] = LoadLastMap()
+		["map"] = mapname
 	}
 	
 	local mapbox = self:Add("Panel")
@@ -38,12 +40,6 @@ function PANEL:InitEx()
 	mapbox:DockPadding(10, 10, 10, 10)
 	
 	do
-		local map = self.GameSettings["map"]
-		local mapinfo = g_MapList[map .. ".bsp"]
-		
-		local category = mapinfo and mapinfo.Category or nil
-		
-		
 		local mapcats_container = mapbox:Add("Panel")
 		mapcats_container:SetWide(190)
 		
@@ -74,7 +70,7 @@ function PANEL:InitEx()
 		
 		do
 			maplist = maplist_spanel:Add("MapList")
-			maplist:SetLastMap(map)
+			maplist:SetLastMap(mapname)
 			
 			maplist:Dock(FILL)
 		end
@@ -90,8 +86,8 @@ function PANEL:InitEx()
 		maplist_spanel:Dock(FILL)
 		
 		
-		maplist.OnSelect = function(pnl, map_name)
-			self.GameSettings["map"] = map_name
+		maplist.OnSelect = function(pnl, mapname)
+			self.GameSettings["map"] = mapname
 		end
 		maplist.DoDoubleClick = function(pnl)
 			return StartGame(self.GameSettings)

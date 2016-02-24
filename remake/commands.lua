@@ -5,7 +5,7 @@ MainMenu.CommandHandlers = {
 	end,
 	
 	["resume_game"] = function()
-		return RawConsoleCommand("gameui_hide")
+		return gui.HideGameUI()
 	end,
 	
 	["new_game"] = function()

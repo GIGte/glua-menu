@@ -29,24 +29,39 @@ function ChangeGamemode(gamemode_name)
 end
 
 
+local last_maplist
+local mapindex
+
+function GetMapIndex()
+	if GetMapList() ~= last_maplist then
+		mapindex = {}
+		
+		for k, v in pairs(GetMapList()) do
+			for i = 1, #v do
+				mapindex[v[i]] = k
+			end
+		end
+	end
+	
+	return mapindex
+end
+
 function LoadLastMap() -- override
 	local t = string.Explode( ";", cookie.GetString( "lastmap", "" ) )
 	
-	local map = t[ 1 ] or ""
-	--local cat = t[ 2 ] or ""
+	local map = t[ 1 ] or "gm_flatgrass"
+	local cat = t[ 2 ] or "Sandbox"
 	
-	local mapinfo = g_MapList[ map .. ".bsp" ]
+	cat = string.gsub( cat, "'", "\\'" )
 	
-	if ( !mapinfo ) then map = "gm_flatgrass" end
-	--if ( !g_MapListCategorised[ cat ] ) then cat = mapinfo and mapinfo.Category or "Sandbox" end
-	
-	--cat = string.gsub( cat, "'", "\\'" )
-	
-	return map
+	return map, cat
 end
 
 function StartGame(cvar_table)
-	SaveLastMap(cvar_table["map"], nil)
+	local mapname = cvar_table["map"]
+	local category = GetMapIndex()[mapname] -- FIXME
+	
+	SaveLastMap(mapname, category)
 	
 	--hook.Run("StartGame")
 	RunConsoleCommand("progress_enable")
@@ -65,8 +80,8 @@ function StartGame(cvar_table)
 			RunConsoleCommand("sv_cheats", "0")
 			RunConsoleCommand("commentary", "0")
 		end
-	
-		RunConsoleCommand("map", cvar_table["map"])
+		
+		RunConsoleCommand("map", mapname)
 		
 		hook.Remove("Think", "GameStartup")
 	end)
