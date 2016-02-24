@@ -37,7 +37,8 @@ function PANEL:SelectCategoryButton(catbutton) -- internal
 	table.sort(maps)
 	
 	self.maplist:ReflectData(maps, self.search_text,
-		cat_name == "Left 4 Dead 2" or cat_name == "Portal 2" or cat_name == "CS: Global Offensive")
+		cat_name == "Left 4 Dead 2" or cat_name == "Portal 2" or cat_name == "CS: Global Offensive"
+		or cat_name == "Blade Symphony" or cat_name == "Alien Swarm" or cat_name == "Dino D-Day")
 end
 
 function PANEL:FilterByText(str)
@@ -87,9 +88,25 @@ function PANEL:OnGameContentChanged()
 	local last_cat = self.last_cat
 	local first = last_cat == nil
 	
-	-- TODO: sandbox should be first
+	local cat_maplist = GetMapList()
 	
-	for k, v in SortedPairs(g_MapListCategorised) do
+	local sandbox_present = cat_maplist["Sandbox"] ~= nil
+	local last_k
+	
+	for k, v in SortedPairs(cat_maplist) do
+		if sandbox_present then 
+			if not last_k then
+				last_k = k
+				k = "Sandbox" -- make always first
+			elseif last_k ~= "Sandbox" then
+				local temp = last_k
+				last_k = k
+				k = temp
+			end
+			
+			v = cat_maplist[k]
+		end
+		
 		local count = self:MapsCount(v)
 		
 		if count == 0 then
