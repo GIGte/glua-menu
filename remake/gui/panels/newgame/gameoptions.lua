@@ -5,9 +5,9 @@ function PANEL:PerformLayout()
 	self:SizeToChildren(false, true)
 end
 
-local function controlOnChange(pnl, value)
+--[[local function controlOnChange(pnl, value)
 	return pnl:GetParent():OnChange(pnl.cvar_name, value)
-end
+end]]
 
 function PANEL:AddTextBox(label, help, cv_name, value) -- internal
 	local clabel = self:Add("DLabel")
@@ -25,8 +25,12 @@ function PANEL:AddTextBox(label, help, cv_name, value) -- internal
 		textentry:SetText(value)
 	end
 	
-	textentry.cvar_name = cv_name
-	textentry.OnValueChange = controlOnChange
+	textentry:SetUpdateOnType(true)
+	
+	--textentry.cvar_name = cv_name
+	textentry.OnValueChange = function(pnl, value)
+		return self:OnChange(cv_name, value)
+	end
 	
 	textentry:DockMargin(0, 0, 0, 2)
 	textentry:Dock(TOP)
@@ -55,8 +59,12 @@ function PANEL:AddNumEntry(label, help, cv_name, value) -- internal
 		textentry:SetText(value)
 	end
 	
-	textentry.cvar_name = cv_name
-	textentry.OnValueChange = controlOnChange
+	textentry:SetUpdateOnType(true)
+	
+	--textentry.cvar_name = cv_name
+	textentry.OnValueChange = function(pnl, value)
+		return self:OnChange(cv_name, value)
+	end
 	
 	textentry:Dock(RIGHT)
 	
@@ -72,8 +80,10 @@ function PANEL:AddCheckBox(label, help, cv_name, value) -- internal
 	local checkbox = holder:Add("DCheckBox")
 	checkbox:SetChecked(value == 1)
 	
-	checkbox.cvar_name = cv_name
-	checkbox.OnChange = controlOnChange
+	--checkbox.cvar_name = cv_name
+	checkbox.OnChange = function(pnl, value)
+		return self:OnChange(cv_name, value)
+	end
 	
 	checkbox:DockMargin(0, 0, 12, 0)
 	checkbox:Dock(LEFT)
