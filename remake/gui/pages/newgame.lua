@@ -179,12 +179,12 @@ function PANEL:PrepareSettings()
 	
 	local settings = self.GameSettings
 	
-	self.GameSettings = { -- clear settings from old options
-		["map"] = settings["map"],
-		["maxplayers"] = settings["maxplayers"],
-		["hostname"] = settings["hostname"],
-		["sv_lan"] = settings["sv_lan"],
-	}
+	self.GameSettings = table.Copy(gm_settings)
+	
+	self.GameSettings["map"] = settings["map"]
+	self.GameSettings["maxplayers"] = settings["maxplayers"]
+	self.GameSettings["hostname"] = settings["hostname"]
+	self.GameSettings["sv_lan"] = settings["sv_lan"]
 	
 	if self.Options then
 		self.Options:UpdateOptions(gm_settings, settings)
