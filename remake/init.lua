@@ -6,20 +6,11 @@ if MainMenu then
 	MainMenu.DestroyView()
 end
 
-if pnlMainMenu then
-	timer.Simple(0.5, function()
-		pnlMainMenu:Remove()
-	end)
-	
-	pnlMainMenu = nil
+if pnlMainMenu and pnlMainMenu:IsValid() then
+	pnlMainMenu:Remove()
+	pnlMainMenu.Call = function() end
 end
 
---[[local cvar_default = CreateConVar("menu_default", "0", FCVAR_ARCHIVE)
-
-if cvar_default:GetBool() then
-	include("../mainmenu.lua")
-	return
-end]]
 
 local cur_menu = cookie.GetString("MenuType", "1")
 
