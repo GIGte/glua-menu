@@ -29,6 +29,8 @@ function PANEL:GetMapName()
 	return self.map
 end
 
+local thumb_src_cache = {}
+
 function PANEL:SetMapName(map_name, incompatible)
 	self.map = map_name
 	
@@ -37,19 +39,26 @@ function PANEL:SetMapName(map_name, incompatible)
 	if incompatible then
 		img_src = "../html/img/incompatible.png"
 	else
-		img_src = string.format("maps/thumb/%s.png", map_name)
+		img_src = thumb_src_cache[map_name]
 		
-		--[[if not file.Exists(img_src, "GAME") then
-			img_src = "maps/thumb/noicon.png"
-		end]]
+		if not img_src then
+			img_src = string.format("maps/thumb/%s.png", map_name)
+			
+			if not file.Exists(img_src, "GAME") then
+				img_src = string.format("maps/%s.png", map_name)
+			end
+			
+			if not file.Exists(img_src, "GAME") then
+				img_src = "maps/thumb/noicon.png"
+			end
+			
+			thumb_src_cache[map_name] = img_src
+		end
 	end
-	
-	-- Calling Material instead of
-	-- file.Exists makes it significantly faster
 	
 	local mat = Material(img_src)
 	
-	if mat:IsError() then
+	--[[if mat:IsError() then
 		img_src = string.format("maps/%s.png", map_name)
 		mat = Material(img_src)
 	end
@@ -57,7 +66,7 @@ function PANEL:SetMapName(map_name, incompatible)
 	if mat:IsError() then
 		img_src = "maps/thumb/noicon.png"
 		mat = Material(img_src)
-	end
+	end]]
 	
 	self.Thumbnail.ImageName = img_src
 	self.Thumbnail:SetMaterial(mat)

@@ -26,7 +26,7 @@ function PANEL:ReflectData(maps, filter, incompatible)
 	self:Clear()
 	
 	for k, v in pairs(self:GetChildren()) do
-		v:Hide() -- to skip them
+		v:Hide()
 	end
 	
 	self.item_selected = nil
