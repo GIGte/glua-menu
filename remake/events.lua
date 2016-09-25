@@ -41,7 +41,7 @@ do
 	end)
 end
 
-do -- костыль
+--[[do -- костыль
 	local custom_fonts = {}
 	
 	local createFont = surface.CreateFont
@@ -70,4 +70,4 @@ do -- костыль
 			end
 		end)
 	end
-end
+end]]
