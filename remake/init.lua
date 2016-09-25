@@ -14,17 +14,24 @@ end
 
 local cur_menu = cookie.GetString("MenuType", "1")
 
+concommand.Add("menu_reload_safe", function()
+	require("hook")
+	include("menu/menu.lua")
+	
+	hook.Run("MenuStart")
+end)
+
 concommand.Add("menu_swap", function()
 	cur_menu = cur_menu == "1" and "0" or "1"
 	
 	cookie.Set("MenuType", cur_menu)
 	--sql.Query("INSERT OR REPLACE INTO cookies (key, value) VALUES (\"MenuType\", \"" .. cur_menu .. "\")")
 	
-	timer.Adjust("Cookie_CommitToSQLite", 0, 1)
+	timer.Adjust("Cookie_CommitToSQLite", -1, 1)
 	
-	--RunConsoleCommand("menu_reload")
-	require("hook")
-	include("menu/menu.lua")
+	timer.Simple(0.1, function()
+		RunConsoleCommand("menu_reload_safe")
+	end)
 end)
 
 if cur_menu == "0" then
