@@ -71,3 +71,7 @@ end
 function serverlist.StopQuerying(query_id)
 	jobs[query_id] = nil
 end
+
+function serverlist.StopQueryingAll()
+	jobs = {}
+end

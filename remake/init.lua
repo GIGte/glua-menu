@@ -6,20 +6,30 @@ if MainMenu then
 	MainMenu.DestroyView()
 end
 
-if pnlMainMenu and pnlMainMenu:IsValid() then
+if IsValid(pnlMainMenu) then
 	pnlMainMenu:Remove()
-	pnlMainMenu.Call = function() end
+	--pnlMainMenu.Call = function() end
+	pnlMainMenu = { Call = function() end }
 end
 
 
-local cur_menu = cookie.GetString("MenuType", "1")
-
 concommand.Add("menu_reload_safe", function()
+	if IsValid(pnlMainMenu) then
+		DoStopServers("internet")
+		DoStopServers("favorite")
+		DoStopServers("history")
+		DoStopServers("lan")
+	else
+		serverlist.StopQueryingAll()
+	end
+	
 	require("hook")
 	include("menu/menu.lua")
 	
 	hook.Run("MenuStart")
 end)
+
+local cur_menu = cookie.GetString("MenuType", "1")
 
 concommand.Add("menu_swap", function()
 	cur_menu = cur_menu == "1" and "0" or "1"
