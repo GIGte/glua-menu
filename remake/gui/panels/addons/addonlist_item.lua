@@ -98,6 +98,32 @@ function PANEL:SetThumbnailImage(img_src) -- internal
 	self.Thumbnail:FixVertexLitMaterial()
 end
 
+local next_time = 0
+local delay
+local isfirst = true
+
+-- this is much better than freezing game
+function PANEL:QueueThumbnailImage(img_src) -- internal
+	if isfirst then
+		isfirst = false
+		
+		local time = SysTime()
+		self:SetThumbnailImage(img_src)
+		
+		delay = SysTime() - time + 0.005
+		
+		return
+	end
+	
+	timer.Simple(next_time, function()
+		if self:IsValid() then
+			self:SetThumbnailImage(img_src)
+		end
+	end)
+	
+	next_time = next_time + delay
+end
+
 function PANEL:FetchPreviewID(callback) -- internal
 	local info = self.addon_info
 	
@@ -146,7 +172,7 @@ function PANEL:DownloadPreviewImage(previewid) -- internal
 		
 		Cache_PreviewImage[previewid] = img_src
 		
-		self:SetThumbnailImage(img_src)
+		self:QueueThumbnailImage(img_src)
 	end)
 end
 
