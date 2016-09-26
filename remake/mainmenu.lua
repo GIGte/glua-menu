@@ -50,9 +50,9 @@ function MainMenu.OnLanguageChanged()
 end
 
 function MainMenu.DestroyView()
-	MainMenu.MainPanel:Remove()
+	--MainMenu.MainPanel:Remove()
 	
-	-- TODO??
+	vgui.GetWorldPanel():Clear()
 	
 	hook.Remove("InGameStateChanged", "MainMenu_InGameCheck")
 	hook.Remove("LanguageChanged", "MainMenu_UpdatePhrases")
