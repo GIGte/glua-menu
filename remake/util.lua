@@ -76,7 +76,7 @@ function StartGame(cvar_table)
 			end
 		end
 		
-		if GetConVarString("maxplayers") ~= "1" then
+		if cvar_table["maxplayers"] ~= "1" then
 			RunConsoleCommand("sv_cheats", "0")
 			RunConsoleCommand("commentary", "0")
 		end
