@@ -1,6 +1,14 @@
 
+surface.CreateFont("Menu_ControlButton", {
+	font	= "Helvetica Neue",
+	size	= 13,
+	weight	= 650
+})
+
+
 local col_hovered_outline = Color(100, 176, 222)
 local col_pressed = Color(135, 192, 228)
+local col_label_default = Color(51, 51, 51)
 
 local PANEL = {}
 
@@ -16,7 +24,7 @@ function PANEL:Init()
 	self:SetCursor("hand")
 	
 	self:SetContentAlignment(6)
-	self:SetFont("DermaDefault") -- TODO
+	self:SetFont("Menu_ControlButton")
 	
 	self:SetText("")
 end
@@ -42,6 +50,21 @@ end
 
 function PANEL:IsDown()
 	return self.Depressed
+end
+
+function PANEL:UpdateColours(skin)
+	local col
+	
+	--if self:GetDisabled() then
+	if self.Depressed or self.m_bSelected then
+		col = skin.Colours.Button.Down
+	elseif self.Hovered then
+		col = skin.Colours.Button.Hover
+	else
+		col = col_label_default
+	end
+	
+	self:SetTextStyleColor(col)
 end
 
 function PANEL:SizeToContentsX(addval)
