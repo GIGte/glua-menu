@@ -49,16 +49,16 @@ function PANEL:InitEx()
 			mapcats = mapcats_container:Add("MapCategoryList")
 			mapcats:SetLastCategory(category)
 			
-			local searchbox = mapcats_container:Add("DTextEntryWHint")
-			searchbox:SetTall(24)
-			searchbox:SetPlaceholder("#searchbar_placeholer")
+			self.SearchBox = mapcats_container:Add("DTextEntryWHint")
+			self.SearchBox:SetTall(24)
+			self.SearchBox:SetPlaceholder("#searchbar_placeholer")
 			
-			searchbox.OnChange = function(pnl)
+			self.SearchBox.OnChange = function(pnl)
 				mapcats:FilterByText(string.lower(pnl:GetText()))
 			end
 			
 			mapcats:Dock(FILL)
-			searchbox:Dock(BOTTOM)
+			self.SearchBox:Dock(BOTTOM)
 		end
 		
 		local catheader = mapbox:Add("MapList_Header")
@@ -163,6 +163,10 @@ function PANEL:Open()
 		
 		self:InitEx()
 	end
+	
+	timer.Simple(0, function()
+		self.SearchBox:RequestFocus()
+	end)
 end
 
 function PANEL:Close()
