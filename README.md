@@ -1,5 +1,5 @@
 # glua-menu
-This is a remake of GMod's standard menu which does not use HTML, it is written completely in Lua.
+This is a remake of GMod's standard menu. It is written completely in Lua and does not involve HTML.
 
 The reason is that HTML makes the menu slower and less responsive.
 
