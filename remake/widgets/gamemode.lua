@@ -43,7 +43,7 @@ function WIDGET:BuildPanel(panel)
 		button:Dock(TOP)
 	end
 	
-	return 200, 261--128
+	return 200, math.min(#gamemodes, 6) * 44 - 4
 end
 
 function WIDGET:OnGamemodeChanged(gamemode_name)
