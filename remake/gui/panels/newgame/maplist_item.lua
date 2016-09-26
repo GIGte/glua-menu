@@ -56,7 +56,7 @@ function PANEL:SetMapName(map_name, incompatible)
 		end
 	end
 	
-	local mat = Material(img_src)
+	local mat = Material(img_src, "mips smooth")
 	
 	--[[if mat:IsError() then
 		img_src = string.format("maps/%s.png", map_name)
