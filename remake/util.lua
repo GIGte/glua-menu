@@ -8,6 +8,19 @@ function ChangeLanguage(lang)
 end
 
 
+local sounds = {
+	["hover"] = "garrysmod/ui_hover.wav",
+	["click"] = "garrysmod/ui_click.wav",
+	["return"] = "garrysmod/ui_return.wav"
+}
+
+function PlayUISound(id)
+	if options.Get("menu_r_nosounds") ~= "1" then
+		surface.PlaySound(sounds[id])
+	end
+end
+
+
 function GamemodeInfo(gamemode_name)
 	local gamemodes = engine.GetGamemodes()
 	

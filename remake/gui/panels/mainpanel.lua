@@ -81,10 +81,12 @@ function PANEL:OnGamemodeChanged(gamemode_name)
 	
 	self.GMLogo:SetMaterial(mat)
 	
-	UpdateBackgroundImages(gamemode_name)
+	if options.Get("menu_r_hidebg") ~= "1" then
+		UpdateBackgroundImages(gamemode_name)
+	end
 end
 
-PANEL.Paint = DrawBackground -- possible opz
+PANEL.Paint = DrawBackground
 
 MainMenuView.MainPanelTable = vgui.RegisterTable(PANEL, "EditablePanel")
 

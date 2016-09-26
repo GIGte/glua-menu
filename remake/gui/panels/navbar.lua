@@ -50,10 +50,12 @@ function PANEL:Init()
 	self.Back:Hide()
 	
 	self.Back.OnCursorEntered = function(self)
+		PlayUISound("hover")
 		self:InvalidateLayout(true)
 	end
 	
 	self.Back.DoClick = function(self)
+		PlayUISound("return")
 		return RunCommand("back")
 	end
 	

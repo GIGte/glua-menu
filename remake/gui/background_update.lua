@@ -2,7 +2,7 @@
 local function scanScreenshots(dir)
 	local files = file.Find(dir .. "*.*", "GAME")
 	
-	for k, v in RandomPairs(files) do
+	for k, v in pairs(files) do
 		AddBackgroundImage(dir .. v)
 	end
 	

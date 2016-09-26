@@ -150,6 +150,8 @@ function PANEL:OnMouseReleased(mousecode)
 		
 		if not self.cmd then return end
 		
+		PlayUISound("click")
+		
 		if isstring(self.cmd) then
 			return RunCommand(self.cmd)--self:DoClick()
 		else
@@ -162,6 +164,8 @@ function PANEL:OnCursorEntered()
 	if not self.selected then
 		self:SetFGColor(col_hovered)
 	end
+	
+	PlayUISound("hover")
 end
 
 function PANEL:OnCursorExited()
