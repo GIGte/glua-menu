@@ -16,13 +16,10 @@ function PANEL:SetupMenuControls(panel)
 	panel:InsertSpace()
 	
 	panel:AddOption("#addons", "addons")
+	panel:AddOption("#demos", "demos")
+	panel:AddOption("#saves", "saves")
 	
 	panel:InsertSpace()
-	
-	--panel:AddOption("#demos", "demos")
-	--panel:AddOption("#saves", "saves")
-	
-	--panel:InsertSpace()
 	
 	panel:AddOption("#options", "options")
 	

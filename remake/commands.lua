@@ -19,10 +19,12 @@ MainMenu.CommandHandlers = {
 		return MainMenu.NavigateTo("Addons")
 	end,
 	["demos"] = function()
-		
+		return gui.OpenURL(
+			"http://steamcommunity.com/workshop/browse/?appid=4000&requiredtags[]=demo")
 	end,
 	["saves"] = function()
-		
+		return gui.OpenURL(
+			"http://steamcommunity.com/workshop/browse/?appid=4000&requiredtags[]=Save")
 	end,
 	
 	["options"] = function()
