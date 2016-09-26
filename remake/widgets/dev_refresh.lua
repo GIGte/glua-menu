@@ -20,5 +20,5 @@ function WIDGET:BuildPanel(panel)
 end
 
 function WIDGET:PanelOpened()
-	RunConsoleCommand("menu_reload")
+	RunConsoleCommand("menu_reload_safe")
 end
