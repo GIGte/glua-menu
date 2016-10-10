@@ -189,6 +189,8 @@ function PANEL:PrepareSettings()
 	self.GameSettings["maxplayers"] = settings["maxplayers"]
 	self.GameSettings["hostname"] = settings["hostname"]
 	self.GameSettings["sv_lan"] = settings["sv_lan"]
+	self.GameSettings["p2p_enabled"] = settings["p2p_enabled"]
+	self.GameSettings["p2p_friendsonly"] = settings["p2p_friendsonly"]
 	
 	if self.Options then
 		self.Options:UpdateOptions(gm_settings, settings)

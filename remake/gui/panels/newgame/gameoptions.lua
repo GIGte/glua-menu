@@ -114,6 +114,10 @@ function PANEL:UpdateOptions(options, settings)
 		settings["hostname"] or "Garry's Mod")
 	self:AddCheckBox("#lan_server", nil, "sv_lan",
 		settings["sv_lan"] or 0)
+	self:AddCheckBox("#p2p_server", nil, "p2p_enabled",
+		settings["p2p_enabled"] or 1)
+	self:AddCheckBox("#p2p_server_friendsonly", nil, "p2p_friendsonly",
+		settings["p2p_friendsonly"] or 0)
 	
 	self:AddOptions(options, "Text", self.AddTextBox)
 	self:AddOptions(options, "Numeric", self.AddNumEntry)
