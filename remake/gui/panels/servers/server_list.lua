@@ -198,10 +198,6 @@ end
 local function determineRanking(data)
 	local val = data.ping
 	
-	if not data.hasmap then
-		val = val + 20
-	end
-	
 	if data.players == 0 then
 		val = val + 100
 	end
@@ -212,6 +208,14 @@ local function determineRanking(data)
 	
 	if data.pass then
 		val = val + 300
+	end
+	
+	if data.players >= 16 then
+		val = val - 40
+	elseif data.players >= 32 then
+		val = val - 20
+	elseif data.players >= 64 then
+		val = val - 10
 	end
 	
 	return val
