@@ -48,7 +48,7 @@ end
 
 function WIDGET:OnGamemodeChanged(gamemode_name)
 	self.Title = GamemodeInfo(gamemode_name).title
-	self.Icon = string.format("../gamemodes/%s/icon24.png", gamemode_name)
+	self.Icon = string.format("gamemodes/%s/icon24.png", gamemode_name)
 	
 	self:ReloadView()
 end

@@ -14,11 +14,11 @@ function WIDGET:Destroy()
 end
 
 function WIDGET:BuildPanel(panel)
-	self:ClosePanel() -- lol
-	
 	return 0, 0
 end
 
 function WIDGET:PanelOpened()
+	self:ClosePanel() -- lol
+	
 	RunConsoleCommand("menu_reload_safe")
 end
