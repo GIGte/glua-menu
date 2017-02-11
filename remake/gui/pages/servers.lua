@@ -1,9 +1,10 @@
 
 surface.CreateFont("Menu_ServersSubtitle", {
-	font	= "Arial",
-	size	= 15,
-	weight	= 500,
-	shadow	= true
+	font = "Arial",
+	size = 15,
+	weight = 500,
+	shadow = true,
+	extended = true
 })
 
 
@@ -182,7 +183,6 @@ function PANEL:OnServerFound(query_id, data)
 	local wsid = gm_data.WorkshopID
 	
 	if wsid and wsid ~= "" then
-		if gm_data.Name == "sandbox" then print(wsid) end
 		local is_subscr = steamworks.IsSubscribed(wsid)
 		
 		gm_data.IsSubscribed = is_subscr

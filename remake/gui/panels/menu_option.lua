@@ -1,27 +1,31 @@
 
 -- In original menu letters are shifted by a pixel.
 surface.CreateFont("Menu_ButtonLabel", {
-	font	= "Arial Narrow",--"Helvetica", -- find a better font?
-	size	= 22,--20,
-	weight	= 900
+	font = "Arial Narrow",--"Helvetica", -- find a better font?
+	size = 22,--20,
+	weight = 900,
+	extended = true
 })
 surface.CreateFont("Menu_ButtonLabel_Shadow", {
-	font	= "Arial Narrow",
-	size	= 22,
-	weight	= 900,
-	blursize = 0
+	font = "Arial Narrow",
+	size = 22,
+	weight = 900,
+	blursize = 0,
+	extended = true
 })
 
 surface.CreateFont("Menu_ButtonLabel_B", {
-	font	= "Arial",
-	size	= 27,
-	weight	= 900
+	font = "Arial",
+	size = 27,
+	weight = 900,
+	extended = true
 })
 surface.CreateFont("Menu_ButtonLabel_B_Shadow", {
-	font	= "Arial",
-	size	= 27,
-	weight	= 900,
-	blursize = 0
+	font = "Arial",
+	size = 27,
+	weight = 900,
+	blursize = 0,
+	extended = true
 })
 
 

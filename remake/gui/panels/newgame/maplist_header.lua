@@ -1,13 +1,15 @@
 
 surface.CreateFont("Menu_MapsCategoryTitle", {
-	font	= "Arial",
-	size	= 39,
+	font = "Arial",
+	size = 39,
+	extended = true
 })
 
 surface.CreateFont("Menu_MapsCount", {
-	font	= "Arial",
-	size	= 17,
-	weight	= 500,
+	font = "Arial",
+	size = 17,
+	weight = 500,
+	extended = true
 })
 
 

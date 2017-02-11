@@ -1,13 +1,15 @@
 
 surface.CreateFont("Menu_ServerGamemode", {
-	font	= "Arial",
-	size	= 24,
-	weight	= 700
+	font = "Arial",
+	size = 24,
+	weight = 700,
+	extended = true
 })
 
 surface.CreateFont("Menu_ServerGamemodeInfo", {
-	font	= "Arial",
-	size	= 14,
+	font = "Arial",
+	size = 14,
+	extended = true
 })
 
 
