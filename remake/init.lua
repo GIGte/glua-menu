@@ -51,6 +51,8 @@ end
 
 
 include("../background.lua")
+include("../cef_credits.lua")
+include("../openurl.lua")
 
 include("mainmenu.lua")
 include("commands.lua")
