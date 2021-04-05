@@ -7,7 +7,7 @@ Initially, the work was not planned as a serious project, so it is not pretendin
 
 The goal is to make a menu similar to the standard one but using Lua solely.
 
-Many things are done alredy:
+Many things are done already:
  - Main screen (100%)
  - New game page (90%)
  - Server browser (80%)
@@ -18,7 +18,7 @@ What is not done:
  - Trending addons
  - Kinect support
 
-##Installation
+## Installation
 Go to %STEAMAPPS%/GarrysMod/garrysmod/lua/menu
 
 There are two ways to install the menu:<br>
@@ -27,5 +27,5 @@ There are two ways to install the menu:<br>
 
 Mind that in both cases you will have to replace menu.lua which can be recovered by Steam (when you get an update or do a cache checking).
 
-##Misc
+## Misc
 Use _menu_swap_ command to switch between the old and the new menu. The current menu is saved and opened on the next game start.
