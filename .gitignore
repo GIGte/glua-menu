@@ -2,6 +2,7 @@
 # Default menu files
 /*.lua
 /mount
+/problems
 
 # Widgets
 /remake/widgets/*.lua
