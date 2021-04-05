@@ -14,7 +14,7 @@ function PANEL:Init()
 	
 	if BRANCH ~= "unknown" then
 		local text = "You are on %s branch. Click here to find out more. (%s)"
-		text = string.format(str, BRANCH, VERSIONSTR)
+		text = string.format(text, BRANCH, VERSIONSTR)
 		
 		self:SetText(text)
 	else
