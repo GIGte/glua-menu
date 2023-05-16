@@ -8,9 +8,9 @@ end
 
 if IsValid(pnlMainMenu) then
 	pnlMainMenu:Remove()
-	--pnlMainMenu.Call = function() end
-	pnlMainMenu = { Call = function() end }
 end
+
+pnlMainMenu = { Call = function() end }
 
 
 concommand.Add("menu_reload_safe", function()
