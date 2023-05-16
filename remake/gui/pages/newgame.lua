@@ -175,15 +175,13 @@ end
 
 function PANEL:PrepareSettings()
 	local gm_settings = self.GamemodeSettings
-	
-	if gm_settings then
-		gm_settings["map"] = nil -- restricted
-		gm_settings["maxplayers"] = nil
-	end
-	
 	local settings = self.GameSettings
 	
-	self.GameSettings = table.Copy(gm_settings)
+	self.GameSettings = {}
+	
+	for k, v in pairs(gm_settings) do
+		self.GameSettings[v.name] = v.default
+	end
 	
 	self.GameSettings["map"] = settings["map"]
 	self.GameSettings["maxplayers"] = settings["maxplayers"]
